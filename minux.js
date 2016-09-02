@@ -1,73 +1,37 @@
 
-
 var Minux = {
 
 	
-	roundedRectangle : function(){
+	roundedRectangle : function(context, ancho, alto, esquinaX, esquinaY, proporcion){			
 			
-			
+		if(ancho >= alto){				
+			var radioCircunferencia = alto/(proporcion * 1.0);
+		}else{
+			var radioCircunferencia = ancho/(proporcion * 1.0);
+		}
 		
-			
-	
-	
-	
+		var resHorizontal = ancho - (2*radioCircunferencia);
+		var resVertical = alto - (2*radioCircunferencia);	
+		
+		context.beginPath();
+
+		context.arc(esquinaX + radioCircunferencia, esquinaY + radioCircunferencia, radioCircunferencia, Math.PI, 3*Math.PI/2, false);
+		context.lineTo(esquinaX + resHorizontal + radioCircunferencia, esquinaY);
+
+		context.arc(esquinaX + radioCircunferencia + resHorizontal, esquinaY + radioCircunferencia, radioCircunferencia, 3*Math.PI/2, 0, false);
+		context.lineTo(esquinaX + ancho, esquinaY + radioCircunferencia + resVertical);
+
+		context.arc(esquinaX + radioCircunferencia + resHorizontal, esquinaY + radioCircunferencia + resVertical, radioCircunferencia, 0, Math.PI/2, false);
+		context.lineTo(esquinaX + radioCircunferencia, esquinaY + alto);
+
+		context.arc(esquinaX + radioCircunferencia, esquinaY + radioCircunferencia + resVertical, radioCircunferencia, Math.PI/2, Math.PI, false);
+		context.lineTo(esquinaX, esquinaY + radioCircunferencia);
+
+		context.stroke();
 	},
 
 
-	elipse : function(context, ejeMayor, ejeMenor, centroX, centroY, anchoDeLinea){
-		
-		var a = ejeMayor/2.0;
-		var b = ejeMenor/2.0;
-
-		/*context.beginPath();
-		var CF = Math.sqrt(a*a - b*b);	//Centro al foco
-		var FA = a - CF;				//Foco al extremo del diametro mayor
-
-		var v1 = a + CF;				//vertices de los focos al un punto de la elipse
-		var v2 = FA
-		 
-		for(var x = (-1*a); x <= a; x += anchoDeLinea){
-			
-			console.log(x)
-
-			y = b * (Math.sqrt(1-(x*x/(a*a))))
-			
-			context.beginPath();
-			context.arc(centroX + x, centroY + y, anchoDeLinea, 0,(2*Math.PI),true);
-			context.arc(centroX + x, centroY - y, anchoDeLinea, 0,(2*Math.PI),true);
-			context.fill();
-		}
-		*/
-
-		var ancho = anchoDeLinea/2;
-
-		var numPixeles = anchoDeLinea/2;
-		
-		for(var x = (-1*a); x <= a; x += numPixeles){
-			
-			var y = b * (Math.sqrt(1-(x*x/(a*a))))
-			
-			context.beginPath();
-			context.arc(centroX + x, centroY + y, ancho, 0,(2*Math.PI),true);
-			context.arc(centroX + x, centroY - y, ancho, 0,(2*Math.PI),true);
-			context.fill();
-
-		}
-
-		for(var y = (-1*b); y <= b; y += numPixeles){
-			
-
-			var x = a * (Math.sqrt(1-(y*y/(b*b))))
-			
-			context.beginPath();
-			context.arc(centroX + x, centroY + y, ancho, 0,(2*Math.PI),true);
-			context.arc(centroX - x, centroY + y, ancho, 0,(2*Math.PI),true);
-			context.fill();
-
-		}
-	},
-
-	fillElipse : function(context, ejeMayor, ejeMenor, centroX, centroY){
+	elipse : function(context, ejeMayor, ejeMenor, centroX, centroY, pixelExtra){
 		
 		var a = ejeMayor/2.0;
 		var b = ejeMenor/2.0;
@@ -94,59 +58,17 @@ var Minux = {
 			context.lineTo(centroX + x, centroY + y);
 		}
 		
-		x = -1*a + numPixeles;
-		y = b * (Math.sqrt(1-(x*x/aa)));
+		if(pixelExtra == true){
 
-		context.lineTo(centroX - a, centroY - y);
-		context.stroke();
+			x = -1*a + numPixeles;
+			y = b * (Math.sqrt(1-(x*x/aa)));
 
-
-		/*for(var y = (-1*b); y <= b; y += numPixeles){			
-			
-			var x = a * (Math.sqrt(1-(y*y/(b*b))))
-
-			context.beginPath();
-			context.moveTo(centroX - x, centroY - y);
-			context.lineTo(centroX + x, centroY - y);
-			context.stroke();
-
-			context.beginPath();
-			context.moveTo(centroX - x, centroY + y);
-			context.lineTo(centroX + x, centroY + y);
-			context.stroke();
-
+			context.lineTo(centroX - a, centroY - y);
 		}
 		
-		/*for(var x = (-1*a); x <= a; x += numPixeles){
-			
-			var y = b * (Math.sqrt(1-(x*x/(a*a))))
-			
-			context.beginPath();
-			context.moveTo(centroX - x, centroY - y);
-			context.lineTo(centroX + x, centroY - y);
-			context.stroke();
-
-			context.beginPath();
-			context.moveTo(centroX - x, centroY + y);
-			context.lineTo(centroX + x, centroY + y);
-			context.stroke();
-		}
-
-		for(var y = (-1*b); y <= b; y += numPixeles){			
-			
-			var x = a * (Math.sqrt(1-(y*y/(b*b))))
-
-			context.beginPath();
-			context.moveTo(centroX - x, centroY - y);
-			context.lineTo(centroX + x, centroY - y);
-			context.stroke();
-
-			context.beginPath();
-			context.moveTo(centroX - x, centroY + y);
-			context.lineTo(centroX + x, centroY + y);
-			context.stroke();
-
-		}*/
+		context.stroke();
+		context.closePath();
 	}
-}
 
+	
+}
